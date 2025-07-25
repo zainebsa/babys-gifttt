@@ -1,12 +1,29 @@
 // --- Dark Mode ---
 const toggle = document.getElementById("darkModeToggle");
-toggle.addEventListener("click", () => {
-  document.body.classList.toggle("dark");
-  localStorage.setItem("darkMode", document.body.classList.contains("dark"));
-});
-if (localStorage.getItem("darkMode") === "true") {
-  document.body.classList.add("dark");
+
+function setDarkMode(isDark) {
+  if (isDark) {
+    document.body.classList.add("dark-mode");
+    toggle.textContent = "☀️"; // Switch icon to sun
+    localStorage.setItem("darkMode", "enabled");
+  } else {
+    document.body.classList.remove("dark-mode");
+    toggle.textContent = "🌗"; // Switch icon to moon
+    localStorage.setItem("darkMode", "disabled");
+  }
 }
+
+// Initialize mode on load
+window.addEventListener("DOMContentLoaded", () => {
+  const isDark = localStorage.getItem("darkMode") === "enabled";
+  setDarkMode(isDark);
+});
+
+toggle.addEventListener("click", () => {
+  const isCurrentlyDark = document.body.classList.contains("dark-mode");
+  setDarkMode(!isCurrentlyDark);
+});
+
 
 // --- Task Checklist ---
 const taskInput = document.getElementById("taskInput");
