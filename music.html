@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Melek’s Music Room</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 20px;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #121a2a;
+      color: #d8c9aa;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      overflow-x: hidden;
+      position: relative;
+      min-height: 100vh;
+    }
+
+    .rain {
+      pointer-events: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      z-index: 0;
+    }
+
+    .drop {
+      position: absolute;
+      bottom: 100%;
+      width: 2px;
+      height: 15px;
+      background: rgba(198, 166, 100, 0.3);
+      animation-name: fall;
+      animation-timing-function: linear;
+      animation-iteration-count: infinite;
+    }
+
+    @keyframes fall {
+      to {
+        transform: translateY(110vh);
+      }
+    }
+
+    h1 {
+      font-family: 'Playfair Display', serif;
+      color: #c6a664;
+      font-size: 2.5rem;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .chick {
+      width: 48px;
+      height: 48px;
+      animation: bounce 2s ease-in-out infinite;
+      user-select: none;
+    }
+
+    @keyframes bounce {
+      0%, 100% {
+        transform: translateY(0);
+      }
+      50% {
+        transform: translateY(-15px);
+      }
+    }
+
+    .btn-back {
+      align-self: flex-start;
+      margin-bottom: 20px;
+      padding: 10px 25px;
+      background-color: #4a90e2;
+      color: white;
+      border-radius: 8px;
+      font-weight: 700;
+      font-size: 1rem;
+      text-decoration: none;
+      box-shadow: 0 4px 12px rgba(74,144,226,0.5);
+      position: relative;
+      z-index: 2;
+    }
+
+    .btn-back:hover {
+      background-color: #357ab8;
+    }
+
+    select {
+      margin: 20px 0;
+      padding: 10px 20px;
+      font-size: 1rem;
+      border-radius: 8px;
+      border: none;
+      background-color: #1d293b;
+      color: #d8c9aa;
+      position: relative;
+      z-index: 2;
+    }
+
+    iframe {
+      border: none;
+      border-radius: 16px;
+      width: 100%;
+      max-width: 720px;
+      height: 405px;
+      box-shadow: 0 0 20px rgba(198, 166, 100, 0.5);
+      position: relative;
+      z-index: 2;
+    }
+
+    .now-playing {
+      margin-top: 10px;
+      font-style: italic;
+      color: #aaa;
+      position: relative;
+      z-index: 2;
+    }
+
+    .weather {
+      margin-top: 20px;
+      padding: 15px 25px;
+      border-radius: 12px;
+      background: rgba(198, 166, 100, 0.15);
+      box-shadow: 0 0 15px rgba(198, 166, 100, 0.7);
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #f0e8c4;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      position: relative;
+      z-index: 2;
+      min-width: 260px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    /* Copy link button fixed top right */
+    #copyLinkBtn {
+      position: fixed;
+      top: 12px;
+      right: 12px;
+      margin: 0;
+      padding: 14px 36px;
+      background: linear-gradient(135deg, #ff6a88, #ff99ac);
+      color: white;
+      border: none;
+      border-radius: 40px;
+      font-weight: 700;
+      font-size: 1.2rem;
+      cursor: pointer;
+      box-shadow:
+        0 4px 15px rgba(255, 106, 136, 0.6),
+        inset 0 -3px 8px rgba(255, 255, 255, 0.3);
+      z-index: 9999;
+      overflow: visible;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      transition: background 0.3s ease;
+    }
+    #copyLinkBtn:hover {
+      background: linear-gradient(135deg, #ff4a6b, #ff7f91);
+      box-shadow:
+        0 6px 20px rgba(255, 74, 107, 0.8),
+        inset 0 -3px 10px rgba(255, 255, 255, 0.4);
+    }
+
+    /* Heart burst container below button top right */
+    .heart-burst-container {
+      position: fixed;
+      top: 50px;  /* Just below the button */
+      right: 20px;
+      width: 120px;
+      height: 120px;
+      pointer-events: none;
+      user-select: none;
+      z-index: 9999;
+      overflow: visible;
+    }
+
+    /* Heart style */
+    .heart {
+      position: absolute;
+      width: 14px;
+      height: 14px;
+      background-color: #e25555;
+      transform-origin: center center;
+      animation: floatUp 1.2s ease forwards;
+      border-radius: 3px 3px 15px 15px;
+      box-shadow:
+        -4px -4px 0 #e25555,
+        4px -4px 0 #e25555;
+    }
+
+    .heart:before,
+    .heart:after {
+      content: "";
+      position: absolute;
+      width: 14px;
+      height: 14px;
+      background-color: #e25555;
+      border-radius: 50%;
+      top: 0;
+      left: 0;
+      box-shadow: none;
+    }
+    .heart:before {
+      transform: translateX(-7px);
+    }
+    .heart:after {
+      transform: translateY(-7px);
+    }
+
+    @keyframes floatUp {
+      0% {
+        opacity: 1;
+        transform: translate(0, 0) scale(1) rotate(0deg);
+      }
+      100% {
+        opacity: 0;
+        transform: translate(var(--x), var(--y)) scale(1.8) rotate(360deg);
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="rain" id="rain"></div>
+
+  <a href="dashboard.html" class="btn-back">← Back to Dashboard</a>
+  <h1>
+    🎶 Melek’s Music Room
+    <img src="https://media.giphy.com/media/10SvWCbt1ytWCc/giphy.gif" alt="Cute Chick" class="chick" />
+  </h1>
+
+  <label for="playlist">Choose a vibe:</label>
+  <select id="playlist" onchange="changePlaylist()">
+    <option value="video-jfKfPfyJRdk" selected>Live Stream</option>
+    <option value="playlist-PLFgquLnL59alCl_2TQvOiD5Vgm1hCaGSI">Chill Vibes (Playlist)</option>
+    <option value="playlist-PLSdoVPMqB86Dj7CKgxQ1LSyeXXIQOBb7U">Focus Music (Playlist)</option>
+    <option value="playlist-PLDcnymzs18LVXfO_x0Ei0R24qDbVtyy66">Celebration (Playlist)</option>
+    <option value="playlist-PL4fGSI1pDJn5weJ5T2pNWI73FNWAkrI3b">His Favorites (Playlist)</option>
+    <option value="video-OKyYR2cqwbw">Cool Video 1</option>
+    <option value="video-2_Q08jJcqe0">Cool Video 2</option>
+  </select>
+
+  <div class="now-playing" id="nowPlaying">Now Playing: Live Stream</div>
+
+  <iframe
+    id="musicFrame"
+    src="https://www.youtube.com/embed/jfKfPfyJRdk"
+    allow="autoplay; encrypted-media"
+    allowfullscreen
+    title="Melek Music Playlist"
+  ></iframe>
+
+  <!-- City selector -->
+  <label for="city">Choose city for weather:</label>
+  <select id="city" onchange="fetchWeather()">
+    <option value="36.8,10.18" selected>Tunis</option>
+    <option value="36.17,8.71">El Kef</option>
+  </select>
+
+  <!-- Weather display -->
+  <div class="weather" id="weather">
+    Loading Tunis weather...
+  </div>
+
+  <!-- Copy Link Button fixed top right -->
+  <button id="copyLinkBtn" onclick="copyLink(event)">Copy Link to This Page</button>
+
+  <!-- Heart burst container below button top right -->
+  <div class="heart-burst-container" id="heartBurstContainer"></div>
+
+  <!-- Rain sound audio -->
+  <audio id="rainSound" src="https://cdn.pixabay.com/download/audio/2022/03/19/audio_77e7df005d.mp3?filename=rain-ambient-8775.mp3" loop autoplay muted></audio>
+
+<script>
+  // Raindrops generation
+  const rainContainer = document.getElementById('rain');
+  const dropsCount = 60;
+  for(let i = 0; i < dropsCount; i++) {
+    const drop = document.createElement('div');
+    drop.classList.add('drop');
+    drop.style.left = Math.random() * 100 + 'vw';
+    drop.style.animationDuration = 0.5 + Math.random() * 0.5 + 's';
+    drop.style.animationDelay = Math.random() * 5 + 's';
+    drop.style.height = 10 + Math.random() * 10 + 'px';
+    rainContainer.appendChild(drop);
+  }
+
+  // Playlist names
+  const playlistNames = {
+    "playlist-PLFgquLnL59alCl_2TQvOiD5Vgm1hCaGSI": "Chill Vibes (Playlist)",
+    "playlist-PLSdoVPMqB86Dj7CKgxQ1LSyeXXIQOBb7U": "Focus Music (Playlist)",
+    "playlist-PLDcnymzs18LVXfO_x0Ei0R24qDbVtyy66": "Celebration (Playlist)",
+    "playlist-PL4fGSI1pDJn5weJ5T2pNWI73FNWAkrI3b": "His Favorites (Playlist)",
+    "video-OKyYR2cqwbw": "Cool Video 1",
+    "video-2_Q08jJcqe0": "Cool Video 2",
+    "video-jfKfPfyJRdk": "Live Stream"
+  };
+
+  function changePlaylist() {
+    const select = document.getElementById("playlist");
+    const selected = select.value;
+    const musicFrame = document.getElementById("musicFrame");
+
+    if (selected.startsWith("playlist-")) {
+      const playlistId = selected.replace("playlist-", "");
+      musicFrame.src = `https://www.youtube.com/embed/videoseries?list=${playlistId}`;
+    } else if (selected.startsWith("video-")) {
+      const videoId = selected.replace("video-", "");
+      musicFrame.src = `https://www.youtube.com/embed/${videoId}`;
+    }
+
+    document.getElementById("nowPlaying").textContent = `Now Playing: ${playlistNames[selected]}`;
+  }
+
+  // Unmute rain on click
+  document.body.addEventListener('click', () => {
+    const audio = document.getElementById('rainSound');
+    if (audio.muted) audio.muted = false;
+  });
+
+  // Fetch weather dynamically based on city select
+  async function fetchWeather() {
+    const weatherDiv = document.getElementById('weather');
+    try {
+      const citySelect = document.getElementById('city');
+      const [lat, lon] = citySelect.value.split(',');
+
+      weatherDiv.textContent = "Loading weather...";
+
+      const response = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true`);
+      if (!response.ok) throw new Error('Weather fetch failed');
+
+      const data = await response.json();
+      const weather = data.current_weather;
+
+      const weatherCodes = {
+        0: "Clear sky ☀️",
+        1: "Mainly clear 🌤️",
+        2: "Partly cloudy ⛅",
+        3: "Overcast ☁️",
+        45: "Fog 🌫️",
+        48: "Depositing rime fog 🌫️",
+        51: "Light drizzle 🌦️",
+        53: "Moderate drizzle 🌦️",
+        55: "Dense drizzle 🌧️",
+        56: "Light freezing drizzle ❄️",
+        57: "Dense freezing drizzle ❄️",
+        61: "Slight rain 🌧️",
+        63: "Moderate rain 🌧️",
+        65: "Heavy rain 🌧️",
+        66: "Light freezing rain ❄️",
+        67: "Heavy freezing rain ❄️",
+        71: "Slight snow fall ❄️",
+        73: "Moderate snow fall ❄️",
+        75: "Heavy snow fall ❄️",
+        77: "Snow grains ❄️",
+        80: "Slight rain showers 🌧️",
+        81: "Moderate rain showers 🌧️",
+        82: "Violent rain showers ⛈️",
+        85: "Slight snow showers ❄️",
+        86: "Heavy snow showers ❄️",
+        95: "Thunderstorm ⛈️",
+        96: "Thunderstorm with slight hail ⛈️",
+        99: "Thunderstorm with heavy hail ⛈️"
+      };
+
+      const description = weatherCodes[weather.weathercode] || "Unknown weather";
+
+      // City name from selected option text
+      const cityName = citySelect.options[citySelect.selectedIndex].text;
+
+      weatherDiv.innerHTML = `
+        🌍 Weather in <strong>${cityName}</strong>: ${description}, 
+        Temperature: <strong>${weather.temperature}°C</strong>, 
+        Windspeed: <strong>${weather.windspeed} km/h</strong>
+      `;
+    } catch (error) {
+      weatherDiv.textContent = "Sorry, couldn't fetch the weather.";
+      console.error(error);
+    }
+  }
+
+  // Copy link function with heart burst top right and button text toggle
+  function copyLink(event) {
+    const btn = event.currentTarget;
+    const url = window.location.href;
+    navigator.clipboard.writeText(url).then(() => {
+      btn.textContent = ''; // Remove text immediately
+      createHeartBurst();
+      setTimeout(() => {
+        btn.textContent = 'Copy Link to This Page';
+      }, 1500);
+    }).catch(() => {
+      alert('Oops! Could not copy the link. Please try manually.');
+    });
+  }
+
+  // Heart burst animation function (top right corner)
+  function createHeartBurst() {
+    const container = document.getElementById('heartBurstContainer');
+
+    // Create multiple hearts with different properties
+    const colors = ['#ff4a6b', '#ff6a88', '#ff99ac', '#ffccd5'];
+    for(let i = 0; i < 15; i++) {
+      const heart = document.createElement('div');
+      heart.classList.add('heart');
+
+      // Random color
+      heart.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+      heart.style.boxShadow = `
+        -4px -4px 0 ${heart.style.backgroundColor},
+        4px -4px 0 ${heart.style.backgroundColor}
+      `;
+
+      // Random size between 12px and 20px
+      const size = 12 + Math.random() * 8;
+      heart.style.width = size + 'px';
+      heart.style.height = size + 'px';
+
+      // Random float direction and distance
+      const x = (Math.random() - 0.5) * 120;
+      const y = -(50 + Math.random() * 100);
+
+      heart.style.setProperty('--x', `${x}px`);
+      heart.style.setProperty('--y', `${y}px`);
+
+      // Random animation duration for some variety
+      heart.style.animationDuration = 0.8 + Math.random() * 0.8 + 's';
+
+      container.appendChild(heart);
+
+      heart.addEventListener('animationend', () => {
+        heart.remove();
+      });
+    }
+  }
+
+  // Initial weather load for default city (Tunis)
+  fetchWeather();
+</script>
+</body>
+</html>

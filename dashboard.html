@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>For Melek</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    #splash {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: #f5f5dc; /* Beige */
+      color: #333;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      font-size: 2.5rem;
+      z-index: 99999;
+      animation: fadeOut 1s ease forwards;
+      animation-delay: 3.5s;
+    }
+
+    @keyframes fadeOut {
+      to { opacity: 0; visibility: hidden; }
+    }
+
+    .music-link:hover {
+      opacity: 0.9;
+      text-decoration: underline;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <font><div id="splash"> Welcome, Mr.Elmoula! 🧑🏻‍💻 </div></font>
+  
+
+  <button id="darkModeToggle" aria-label="Toggle Dark Mode" title="Toggle Dark Mode">🌗</button>
+
+  <span class="heart">💖</span>
+  <span class="heart">💘</span>
+  <span class="heart">💕</span>
+  <span class="heart">💞</span>
+  <span class="heart">💓</span>
+
+  <div class="container">
+    <a href="homepage.html" class="btn back-home" aria-label="Back to Homepage">← Back to Homepage</a>
+    <h1 class="love-font"> Melek's Cozy Dashboard</h1>
+    <p class="subtitle">Your personal love-powered productivity space ✨</p>
+
+    <section class="dailyLove card">
+      <h2 class="love-font">💘 Your Daily Love Note</h2>
+      <p id="dailyLoveText"></p>
+    </section>
+
+    <section class="tasks card">
+      <h2>✅ Task Checklist</h2>
+      <input type="text" id="taskInput" placeholder="Add a new task..." />
+      <button onclick="addTask()" class="emoji">➕ Add Task</button>
+      <ul id="taskList"></ul>
+    </section>
+
+    <section class="notes card">
+      <h2>📝 Notes</h2>
+      <textarea id="noteInput" placeholder="Write your thoughts..."></textarea>
+      <button onclick="addNote()" class="emoji">📌 Add Note</button>
+      <ul id="notesList" class="sticky-notes"></ul>
+    </section>
+
+    <section class="recorder card">
+      <h2>🎤 Voice Recorder</h2>
+      <button id="recordBtn" class="emoji">⏺️ Start</button>
+      <button id="stopBtn" class="emoji" disabled>⏹️ Stop</button>
+      <ul id="recordingsList"></ul>
+    </section>
+
+    <section class="files card">
+      <h2>📁 Documents & Files</h2>
+      <input type="file" id="fileUpload" />
+      <ul id="fileList"></ul>
+    </section>
+
+    <section class="alarm card">
+      <h2>⏰ Alarm</h2>
+      <input type="time" id="alarmTime" />
+      <button onclick="setAlarm()" class="emoji">🔔 Set Alarm</button>
+      <p id="alarmStatus"></p>
+      <audio id="alarmAudio" src="https://actions.google.com/sounds/v1/alarms/alarm_clock.ogg" preload="auto"></audio>
+    </section>
+
+    <section class="quote card">
+      <h2>💡 Daily Inspiration</h2>
+      <p id="quoteText">Click below for a surprise...</p>
+      <button onclick="generateQuote()" class="emoji">🌟 Get Quote</button>
+    </section>
+
+    <!-- Music Player Link Section -->
+    <section class="music card">
+      <a href="music.html" class="music-link" style="text-decoration: none; color: inherit;">
+        <h2>🎧 Music Player</h2>
+        <p id="musicTitle">Click here to open the music room</p>
+      </a>
+    </section>
+
+    <section class="phone-call card">
+      <h2>📞 Phone Call</h2>
+      <a href="tel:+1234567890" id="phoneCallLink" class="btn phone-call-btn" aria-label="Call Melek">📱 Call</a>
+    </section>
+
+    <section class="secret card">
+      <button onclick="showLoveNote()" class="emoji">💌 For Melek</button>
+      <p id="loveNote" class="hidden love-font"></p>
+      <div id="kiss" class="kiss hidden">💋</div>
+    </section>
+  </div>
+
+  <script src="script.js"></script>
+
+</body>
+</html>
